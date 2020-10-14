@@ -1,10 +1,10 @@
 var web3 = new Web3(Web3.givenProvider);
-var contractInstance;
+var instance;
 
 $(document).ready(function() {
     window.ethereum.enable().then(function(accounts){ //access to Metamask
-      contractInstance = new web3.eth.Contract(window.abi, "0x3D2e35244eEa9d29Cd085776d5d1ff9e3E0Ec16E", {from: accounts[0]});  //allows you to interact with smart contracts as if they were JavaScript objects.
-      console.log(contractInstance);
+      instance = new web3.eth.Contract(window.abi, "0x84f5d9Efd7c53C029DC6680F1995b5Cb8b19E82a", {from: accounts[0]});  //allows you to interact with smart contracts as if they were JavaScript objects.
+      console.log(instance);
     });
     $("#add_data_button").click(inputData)
     $("#get_data_button").click(fetchAndDisplayData)
@@ -19,7 +19,7 @@ function inputData(){
     value: web3.utils.toWei("1", "ether")
   };
 
-  contractInstance.methods.createPerson(name, age, height).send(config)
+  instance.methods.createPerson(name, age, height).send(config)
   .on("transactionHash", function(hash){
     console.log(hash);
   })//event listener web3
@@ -33,12 +33,9 @@ function inputData(){
 }
 
 function fetchAndDisplayData(){
-    contractInstance.methods.getPerson().call().then(function(res){
+    instance.methods.getPerson().call().then(function(res){
       $("#name_output").text(res.name);
       $("#age_output").text(res.age);
       $("#height_output").text(res.height);
     })
-
-
-
 }
